@@ -1,16 +1,14 @@
 <script setup>
 
-import Balance from './Balance.vue';
-import Header from './Header.vue';
-import IncomeExpenses from './IncomeExpenses.vue';
+import AddTransactions from './components/AddTransactions.vue'
+import Balance from './components/Balance.vue';
+import Header from './components/Header.vue';
+import IncomeExpenses from './components/IncomeExpenses.vue';
 
 import {ref, computed} from 'vue'
 
 const transactions = ref([
-  {id: 1, text: 'Paycheck', amount: 700.00},
-  {id: 2, text: 'Water Bill', amount: -72.83},
-  {id: 3, text: 'Electric Bill', amount: -153.89},
-  {id: 4, text: 'Return', amount: 20.00},
+
 ])
 
 const sum = computed(() => {
@@ -35,6 +33,13 @@ const moneyOut = computed(() => {
   },0)
 })
 
+const handleTransaction = (transactionData) => {
+  transactions.value.push ({
+  text: transactionData.text,
+  amount: transactionData.amount, 
+  })
+}
+
 </script>
 
 <template>
@@ -42,6 +47,7 @@ const moneyOut = computed(() => {
 
   <div class ="container">
       <Balance :total="sum"></Balance>
+      <AddTransactions @transactionSubmitted="handleTransaction"></AddTransactions>
       <IncomeExpenses :income="moneyIn" :expense="moneyOut"></IncomeExpenses>
 
     </div>
