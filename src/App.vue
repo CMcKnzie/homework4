@@ -1,7 +1,9 @@
 <script setup>
 
-import Header from './Header.vue';
 import Balance from './Balance.vue';
+import Header from './Header.vue';
+import IncomeExpenses from './IncomeExpenses.vue';
+
 import {ref, computed} from 'vue'
 
 const transactions = ref([
@@ -16,6 +18,23 @@ const sum = computed(() => {
       return acc+x.amount
   },0)
 })
+
+const moneyIn = computed(() => {
+  return transactions.value
+  .filter((x)=>x.amount>0)
+  .reduce((acc, x) => {
+      return acc+x.amount
+  },0)
+})
+
+const moneyOut = computed(() => {
+  return transactions.value
+  .filter((x)=>x.amount<0)
+  .reduce((acc, x) => {
+      return acc+x.amount
+  },0)
+})
+
 </script>
 
 <template>
@@ -23,6 +42,8 @@ const sum = computed(() => {
 
   <div class ="container">
       <Balance :total="sum"></Balance>
+      <IncomeExpenses :income="moneyIn" :expense="moneyOut"></IncomeExpenses>
+
     </div>
 
 </template>
